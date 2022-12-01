@@ -22,6 +22,7 @@ class MHClickhouseDriver():
 
     FIELD_TYPES = {np.dtype('int64'): 'Int64',
                    np.dtype('<M8[ns]'): 'DateTime',
+                   np.dtype('datetime64[ns]'): 'DateTime',
                    np.dtype('O'): 'String',
                    np.dtype('bool'): 'UInt8',
                    np.dtype('float64'): 'Float'}
