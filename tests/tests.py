@@ -37,10 +37,10 @@ class TestMHClickhouseDriver(unittest.TestCase):
         df = generate_fake_dataframe(size=100, cols="cifcdtb")
         table_name = 'test_dataframe_upload'
 
-        driver = MHClickhouseDriver()
-        count = driver.upload_df(df, table_name,
-                                 'column_5_datetime',
-                                 clean="column_5_datetime >= '2022-11-01'")
+        with MHClickhouseDriver() as driver:
+            count = driver.upload_df(df, table_name,
+                                     'column_5_datetime',
+                                     clean="column_5_datetime >= '2022-11-01'")
         self.assertEqual(count, 100)
 
         db = self.client.connection.database
@@ -49,15 +49,18 @@ class TestMHClickhouseDriver(unittest.TestCase):
         self.assertEqual(result[0][0], 100)
 
     def test_testdata_uploads(self):
-        driver = MHClickhouseDriver()
-        for filepath in glob.glob(os.path.join('tests/test_data', '*.csv')):
-            df = read_csv(filepath)
-            print(df.head())
-            names = os.path.basename(filepath).split('.')[0].split('_')
+        with MHClickhouseDriver() as driver:
+            for filepath in glob.glob(
+                os.path.join('tests/test_data',
+                             '*.csv')):
 
-            count = driver.upload_df(df, names[0], names[1])
+                df = read_csv(filepath)
+                print(df.head())
+                names = os.path.basename(filepath).split('.')[0].split('_')
 
-            self.assertEqual(len(df), count)
+                count = driver.upload_df(df, names[0], names[1])
+
+                self.assertEqual(len(df), count)
 
 
 if __name__ == "__main__":

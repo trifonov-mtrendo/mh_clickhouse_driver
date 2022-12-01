@@ -17,6 +17,9 @@ class MHClickhouseDriver():
                              settings={'use_numpy': True})
         self.logger = logging.getLogger("MHClickhouseDriver")
 
+    def __enter__(self):
+        return self
+
     FIELD_TYPES = {np.dtype('int64'): 'Int64',
                    np.dtype('<M8[ns]'): 'DateTime',
                    np.dtype('O'): 'String',
@@ -79,3 +82,6 @@ class MHClickhouseDriver():
 
         self.logger.info("Inserted %s records" % count)
         return count
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.client.disconnect()
