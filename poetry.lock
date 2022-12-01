@@ -92,7 +92,11 @@ optional = false
 python-versions = ">=3.8"
 
 [package.dependencies]
-numpy = {version = ">=1.20.3", markers = "python_version < \"3.10\""}
+numpy = [
+    {version = ">=1.20.3", markers = "python_version < \"3.10\""},
+    {version = ">=1.21.0", markers = "python_version >= \"3.10\""},
+    {version = ">=1.23.2", markers = "python_version >= \"3.11\""},
+]
 python-dateutil = ">=2.8.1"
 pytz = ">=2020.1"
 
@@ -229,8 +233,8 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [metadata]
 lock-version = "1.1"
-python-versions = "3.9.8"
-content-hash = "ec0c80f3a420a680fcbd9fe0c420d225cdae8a919c7a87da9fa7b9fe644a29ea"
+python-versions = "^3.9"
+content-hash = "70da1393c089bcbcbec440da18ed4897f02a94fcee4bff29cbe9f9a34361cb76"
 
 [metadata.files]
 autopep8 = [
