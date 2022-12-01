@@ -54,11 +54,23 @@ class MHClickhouseDriver():
         self.logger.info("Creating table\n%s" % query)
         self.client.execute(query)
 
+    def clean_data(self, table, where_query):
+        db = self.client.connection.database
+        exists = self.client.execute(f'EXISTS {db}.{table}')
+
+        if exists[0][0] == 1:
+            delete_query = f"""ALTER TABLE {db}.{table} delete
+                                where {where_query}"""
+            self.client.execute(delete_query)
+
     def upload_df(self, df: DataFrame, destination_table: str,
-                  order_by: str, partition_by: str = None):
+                  order_by: str, partition_by: str = None, clean: str = None):
 
         self.create_table_if_not_exists(
             df, destination_table, order_by, partition_by)
+
+        if clean:
+            self.clean_data(destination_table,  clean)
 
         db = self.client.connection.database
         count = self.client.insert_dataframe(

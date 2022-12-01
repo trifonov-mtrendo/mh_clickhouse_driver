@@ -23,8 +23,8 @@ class TestMHClickhouseDriver(unittest.TestCase):
                              settings={'use_numpy': True})
         db = self.client.connection.database
         tables = self.client.execute(f'SHOW TABLES IN {db};')
-        for table in tables[0]:
-            query = (f'DROP TABLE IF EXISTS {db}.{table};')
+        for table in tables:
+            query = (f'DROP TABLE IF EXISTS {db}.{table[0]};')
             self.client.execute(query)
         return super().setUp()
 
@@ -38,8 +38,9 @@ class TestMHClickhouseDriver(unittest.TestCase):
         table_name = 'test_dataframe_upload'
 
         driver = MHClickhouseDriver()
-        count = driver.upload_df(df, table_name, 'column_5_datetime')
-
+        count = driver.upload_df(df, table_name,
+                                 'column_5_datetime',
+                                 clean="column_5_datetime >= '2022-11-01'")
         self.assertEqual(count, 100)
 
         db = self.client.connection.database
