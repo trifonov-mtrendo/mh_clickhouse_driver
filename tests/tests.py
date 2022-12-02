@@ -55,8 +55,6 @@ class TestMHClickhouseDriver(unittest.TestCase):
                              '*.csv')):
 
                 df = read_csv(filepath)
-                print(filepath)
-                print(df.dtypes)
                 names = os.path.basename(filepath).split('.')[0].split('_')
 
                 count = driver.upload_df(df, names[0], names[1])

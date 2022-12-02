@@ -67,9 +67,14 @@ class MHClickhouseDriver():
                                 where {where_query}"""
             self.client.execute(delete_query)
 
+    def fix_object_dtype(self, df: DataFrame):
+        for name, type in df.dtypes.items():
+            if type == np.dtype('O'):
+                df[name] = df[name].astype(str)
+
     def upload_df(self, df: DataFrame, destination_table: str,
                   order_by: str, partition_by: str = None, clean: str = None):
-
+        self.fix_object_dtype(df)
         self.create_table_if_not_exists(
             df, destination_table, order_by, partition_by)
 
