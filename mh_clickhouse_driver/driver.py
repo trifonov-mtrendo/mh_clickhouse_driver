@@ -4,7 +4,6 @@ import json
 import numpy as np
 from clickhouse_driver import Client
 from pandas import DataFrame
-import pandas as pd
 from google.cloud import bigquery
 from pathlib import Path
 
@@ -16,6 +15,7 @@ class MHClickhouseDriver():
                              database=os.getenv('CLICKHOUSE_DATABASE'),
                              user=os.getenv('CLICKHOUSE_USER'),
                              password=os.getenv('CLICKHOUSE_PASSWORD'),
+                             use_numpy=True,
                              secure='True')
         self.logger = logging.getLogger("MHClickhouseDriver")
 
