@@ -65,19 +65,24 @@ class MHClickhouseDriver():
                                       df: DataFrame,
                                       table_name: str,
                                       order_by: str,
-                                      partition_by: str = None):
+                                      partition_by: str = None,
+                                      db: str = None):
 
         fields = self.get_table_fields(df)
         self.create_table_if_not_exists(fields,
                                         table_name,
                                         order_by,
-                                        partition_by)
+                                        partition_by,
+                                        db)
 
     def create_table_if_not_exists(self,
                                    fields: list[str],
                                    table_name: str,
                                    order_by: str,
-                                   partition_by: str = None):
+                                   partition_by: str = None,
+                                   db: str = None):
+        if db == None:
+            db = self.client.connection.database
         nl = ',\n'
         if partition_by:
             order_by = partition_by
@@ -86,7 +91,7 @@ class MHClickhouseDriver():
             partition_by_sql = ''
 
         query = f'''CREATE TABLE IF NOT EXISTS
-        {self.client.connection.database}.{table_name}
+        {db}.{table_name}
         (
         {nl.join(fields)}
         )
@@ -164,15 +169,16 @@ class MHClickhouseDriver():
         return count
 
     def upload_df(self, df: DataFrame, destination_table: str,
-                  order_by: str, partition_by: str = None, clean: str = None):
+                  order_by: str, partition_by: str = None, clean: str = None,
+                  db: str = None):
         self.fix_object_dtype(df)
         self.create_table_if_not_exists_df(
-            df, destination_table, order_by, partition_by)
+            df, destination_table, order_by, partition_by, db)
 
         if clean:
-            self.clean_data(destination_table,  clean)
+            self.clean_data(destination_table,  clean, db)
 
-        count = self.upload_df_only(destination_table, df)
+        count = self.upload_df_only(destination_table, df, db)
         return count
 
     def __exit__(self, exc_type, exc_value, traceback):
