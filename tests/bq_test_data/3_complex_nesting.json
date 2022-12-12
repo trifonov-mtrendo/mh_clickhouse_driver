@@ -1,0 +1,1 @@
+{ "date":"2022-10-01", "user": {    "id": null,    "old_id": null,    "user_properties": [{ "key": "YM_Client_ID", "value": null },{ "key": "YM_Client_ID", "value": 1 }],    "user_ltv": { "revenue": 0, "currency": "USD" }  }}

@@ -1,0 +1,1 @@
+{  "date":"2022-10-01", "user": {    "id": null,    "old_id": null,    "user_ltv": { "revenue": 0, "currency": "USD" }  },  "customDimensions": [{ "key": "url_city", "value": "astrakhan" },{ "key": "url_city", "value": "astrakhan2" }]}
