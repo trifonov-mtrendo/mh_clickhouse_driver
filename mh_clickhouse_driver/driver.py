@@ -15,7 +15,7 @@ class MHClickhouseDriver():
                              database=os.getenv('CLICKHOUSE_DATABASE'),
                              user=os.getenv('CLICKHOUSE_USER'),
                              password=os.getenv('CLICKHOUSE_PASSWORD'),
-                             use_numpy=True,
+                             settings={'use_numpy': True},
                              secure='True')
         self.logger = logging.getLogger("MHClickhouseDriver")
 
