@@ -81,10 +81,12 @@ class MHClickhouseDriver():
                                    order_by: str,
                                    partition_by: str = None,
                                    db: str = None):
-        if db == None:
+        if db is None:
             db = self.client.connection.database
         nl = ',\n'
         if partition_by:
+            if not order_by:
+                order_by = partition_by
             order_by = partition_by
             partition_by_sql = f'PARTITION BY {partition_by}'
         else:
